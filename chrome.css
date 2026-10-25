@@ -15,6 +15,7 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
       --transition-delay: var(--mod-autoexpand-animation_delay);
       --transition-delay-after: var(--mod-autoexpand-collapse_delay);
       --collapsed-tab-bar-width: var(--mod-autoexpand-collapsed_width);
+      --sidebar-reserved-width: calc(var(--collapsed-tab-bar-width) + 5px);
       --win-radius: 6px;
       --linux-radius: 8px;
       --mac-radius: 10px;
@@ -201,9 +202,9 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
         --transition-delay-fast: calc(var(--transition-duration) + var(--transition-delay-after));
       }
       --my-width: calc(var(--collapsed-tab-bar-width) + 8px);
-      --sidebar-overflow: calc(var(--collapsed-tab-bar-width) - var(--expanded-tab-bar-width));
+      --sidebar-overflow: calc(var(--sidebar-reserved-width) - var(--expanded-tab-bar-width));
+      clip-path: inset(0);
       &:not([zen-right-side="true"]){
-        clip-path: inset(0 -5px 0 0);
         padding-right: 5px !important;
         #zen-sidebar-splitter {
           right: var(--sidebar-overflow) !important;
@@ -211,7 +212,6 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
       }
       &[zen-right-side="true"]{
         right: 0 !important;
-        clip-path: inset(0 0 0 -5px);
         padding-left: 5px !important;
         #zen-sidebar-splitter {
           left: var(--sidebar-overflow) !important;
@@ -224,9 +224,9 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
       height: 100%;
       /* Keep the measured box equal to the page's reserved width. Library
          subtracts this box when computing its native animation offset. */
-      min-width: var(--collapsed-tab-bar-width) !important;
-      max-width: var(--collapsed-tab-bar-width) !important;
-      width: var(--collapsed-tab-bar-width) !important;
+      min-width: var(--sidebar-reserved-width) !important;
+      max-width: var(--sidebar-reserved-width) !important;
+      width: var(--sidebar-reserved-width) !important;
       overflow: visible !important;
       /* Zen writes transform and opacity on each Library spring frame. Only
          the hover clip should have an additional CSS transition. */
@@ -414,14 +414,13 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
 
       /*Adds space for the tab icons*/
       #navigator-toolbox:not([zen-right-side="true"]) ~ #zen-appcontent-wrapper{
-      margin-left: var(--collapsed-tab-bar-width);
+      margin-left: var(--sidebar-reserved-width);
       }
       #navigator-toolbox[zen-right-side="true"] ~ #zen-appcontent-wrapper{
-      margin-right: var(--collapsed-tab-bar-width);
+      margin-right: var(--sidebar-reserved-width);
       }
 
-      /* Library now measures the same collapsed width reserved by the page,
-         so its native spring needs no extra margin or second closing stage. */
+      /* Let Library drive the page's transform directly with its native spring. */
       #navigator-toolbox ~ #zen-appcontent-wrapper {
         transition: z-index 0ms ease var(--transition-delay-fast) !important;
       }
