@@ -235,7 +235,6 @@ not (-moz-bool-pref: "zen.view.use-single-toolbar") {
       /* The toolbar contents still lay out at the configured expanded width. */
       > :is(toolbar, #titlebar) {
         width: calc(var(--expanded-tab-bar-width) - var(--zen-toolbox-padding) - 5px) !important;
-        flex-shrink: 0;
       }
       &[zen-right-side="true"] > :is(toolbar, #titlebar) {
         align-self: flex-end;
